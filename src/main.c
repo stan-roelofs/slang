@@ -1,17 +1,16 @@
 #include <stdio.h>
 
-static void usage(const char *program_name)
-{
-    printf("Usage: %s script", program_name);
-}
+#include "chunk.h"
+#include "debug.h"
+#include "opcode.h"
 
 int main(int argc, const char *argv[])
 {
-    if (argc != 2)
-    {
-        usage(argv[0]);
-        return 1;
-    }
+    xyz_chunk chunk;
+    xyz_chunk_init(&chunk);
+    xyz_chunk_write(&chunk, (uint8_t)OP_RETURN);
 
-    return 0;
+    xyz_disassemble_chunk(&chunk, "test chunk");
+
+    xyz_chunk_free(&chunk);
 }

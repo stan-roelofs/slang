@@ -4,11 +4,24 @@ project(xyz
         VERSION 0.1.0 
         DESCRIPTION "A simple but efficient scripting language"
         LANGUAGES C)
+
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED ON)
+set(CMAKE_C_EXTENSIONS OFF)
         
 set (HEADERS
+    src/chunk.h
+    src/common.h
+    src/debug.h
+    src/memory.h
+    src/opcode.h
 )
 
 set(SOURCES
+    src/chunk.c
+    src/debug.c
+    src/memory.c
+
     src/main.c
 )
 
