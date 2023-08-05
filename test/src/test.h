@@ -27,6 +27,8 @@ typedef struct
         result = false;                                                         \
     }
 
+#define FLOAT_EQUAL(a, b) (fabs((a) - (b)) < 0.00001)
+
 #define TEST_PASS() return true;
 
 #define RUN_TEST_SUITE(name)                           \

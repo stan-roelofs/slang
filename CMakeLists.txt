@@ -17,12 +17,14 @@ set (HEADERS
     src/debug.h
     src/memory.h
     src/opcode.h
+    src/value.h
 )
 
 set(SOURCES
     src/chunk.c
     src/debug.c
     src/memory.c
+    src/value.c
 )
 
 add_library(xyz ${SOURCES} ${HEADERS})

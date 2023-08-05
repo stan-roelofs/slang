@@ -55,4 +55,15 @@ ADD_TEST(free)
     EXPECT(chunk.code == NULL);
 }
 
+ADD_TEST(write_constant)
+{
+    xyz_chunk chunk;
+    xyz_chunk_init(&chunk);
+
+    size_t index = xyz_chunk_write_constant(&chunk, 5);
+    EXPECT(index == 0);
+    EXPECT(chunk.constants.size == 1);
+    EXPECT(chunk.constants.values[0] == 5);
+}
+
 END_TEST_SUITE()
