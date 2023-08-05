@@ -49,5 +49,4 @@ typedef struct
 #define END_TEST_SUITE() \
     return result;       \
     }
-
 #endif
