@@ -11,27 +11,37 @@ void xyz_chunk_init(xyz_chunk *chunk)
     chunk->size = 0;
     chunk->capacity = 0;
     chunk->code = NULL;
+    chunk->code_line_numbers = NULL;
     xyz_value_array_init(&chunk->constants);
 }
 
 void xyz_chunk_free(xyz_chunk *chunk)
 {
     free(chunk->code);
+    free(chunk->code_line_numbers);
     xyz_value_array_free(&chunk->constants);
     xyz_chunk_init(chunk);
 }
 
-void xyz_chunk_write(xyz_chunk *chunk, uint8_t value)
+void xyz_chunk_write(xyz_chunk *chunk, uint8_t value, unsigned line_number)
 {
     if (chunk->size == chunk->capacity)
     {
         chunk->capacity = GROW_CHUNK(chunk->capacity);
         chunk->code = xyz_reallocate(chunk->code, chunk->capacity);
+        chunk->code_line_numbers = xyz_reallocate(chunk->code_line_numbers, chunk->capacity);
     }
 
     assert(chunk->size < chunk->capacity);
 
-    chunk->code[chunk->size++] = value;
+    chunk->code[chunk->size] = value;
+    chunk->code_line_numbers[chunk->size++] = line_number;
+}
+
+unsigned xyz_chunk_get_line_number(xyz_chunk *chunk, size_t instruction_index)
+{
+    assert(instruction_index < chunk->size);
+    return chunk->code_line_numbers[instruction_index];
 }
 
 size_t xyz_chunk_write_constant(xyz_chunk *chunk, xyz_value value)
