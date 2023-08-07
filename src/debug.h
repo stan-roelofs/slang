@@ -3,6 +3,6 @@
 
 #include "chunk.h"
 
-void xyz_disassemble_chunk(xyz_chunk *chunk, const char *name);
+void xyz_disassemble_chunk(struct xyz_chunk *chunk, const char *name);
 
 #endif

@@ -1,5 +1,9 @@
 #include <stdio.h>
 
+#include "chunk.h"
+#include "debug.h"
+#include "opcode.h"
+
 #include "test.h"
 
 #define EXIT_SUCCESS 0
@@ -20,5 +24,14 @@ int main(int argc, const char *argv[])
     }
 
     printf("\nAll tests passed!\n");
+
+    struct xyz_chunk chunk;
+    xyz_chunk_init(&chunk);
+    size_t constant = xyz_chunk_write_constant(&chunk, 1.2);
+    xyz_chunk_write(&chunk, OP_CONSTANT, 123);
+    xyz_chunk_write(&chunk, constant, 123);
+    xyz_chunk_write(&chunk, OP_RETURN, 123);
+    xyz_disassemble_chunk(&chunk, "test chunk");
+
     return EXIT_SUCCESS;
 }

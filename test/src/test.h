@@ -4,14 +4,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-typedef bool (*TestFunction)(void);
-
-typedef struct
-{
-    const char *name;
-    TestFunction function;
-} Test;
-
 #define ASSERT(condition)                                                       \
     if (!(condition))                                                           \
     {                                                                           \
