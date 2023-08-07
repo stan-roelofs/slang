@@ -14,6 +14,8 @@ ADD_TEST(init)
     EXPECT(value_array.capacity == 0);
     EXPECT(value_array.size == 0);
     EXPECT(value_array.values == NULL);
+
+    xyz_value_array_free(&value_array);
 }
 
 ADD_TEST(write)
@@ -25,6 +27,8 @@ ADD_TEST(write)
     EXPECT(value_array.capacity >= 1);
     ASSERT(value_array.size == 1);
     EXPECT(FLOAT_EQUAL(value_array.values[0], 5));
+
+    xyz_value_array_free(&value_array);
 }
 
 ADD_TEST(capacity_grows)
@@ -43,6 +47,8 @@ ADD_TEST(capacity_grows)
     xyz_value_array_write(&value_array, 7);
     EXPECT(value_array.capacity > old_capacity);
     EXPECT(value_array.values[value_array.size - 1] == 7);
+
+    xyz_value_array_free(&value_array);
 }
 
 ADD_TEST(free)

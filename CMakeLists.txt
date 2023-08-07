@@ -18,6 +18,7 @@ set (HEADERS
     src/memory.h
     src/opcode.h
     src/value.h
+    src/vm.h
 )
 
 set(SOURCES
@@ -25,6 +26,7 @@ set(SOURCES
     src/debug.c
     src/memory.c
     src/value.c
+    src/vm.c
 )
 
 add_library(xyz ${SOURCES} ${HEADERS})

@@ -6,7 +6,7 @@
 
 #define xyz_printf(...) printf(__VA_ARGS__)
 
-static void xyz_print_value(xyz_value value)
+void xyz_print_value(xyz_value value)
 {
     xyz_printf("%g", value);
 }
@@ -21,10 +21,10 @@ static size_t xyz_disassemble_instruction(struct xyz_chunk *chunk, size_t offset
 
     switch (instruction)
     {
-    case OP_RETURN:
+    case XYZ_OPCODE_RETURN:
         xyz_printf("OP_RETURN\n");
         return offset + 1;
-    case OP_CONSTANT:
+    case XYZ_OPCODE_CONSTANT:
     {
         size_t constant_index = chunk->code[offset + 1];
         xyz_value constant = chunk->constants.values[constant_index];
@@ -51,4 +51,16 @@ void xyz_disassemble_chunk(struct xyz_chunk *chunk, const char *name)
 
         offset = xyz_disassemble_instruction(chunk, offset);
     }
+}
+
+void xyz_print_stack(struct xyz_vm *vm)
+{
+    xyz_printf("          ");
+    for (xyz_value *i = vm->stack; i < vm->stack_pointer; i++)
+    {
+        xyz_printf("[ ");
+        xyz_print_value(*i);
+        xyz_printf(" ]");
+    }
+    xyz_printf("\n");
 }

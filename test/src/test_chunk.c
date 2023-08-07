@@ -12,6 +12,8 @@ ADD_TEST(init)
     EXPECT(chunk.capacity == 0);
     EXPECT(chunk.size == 0);
     EXPECT(chunk.code == NULL);
+
+    xyz_chunk_free(&chunk);
 }
 
 ADD_TEST(write)
@@ -24,6 +26,8 @@ ADD_TEST(write)
     ASSERT(chunk.size == 1);
     EXPECT(chunk.code[0] == 5);
     EXPECT(chunk.code_line_numbers[0] == 3);
+
+    xyz_chunk_free(&chunk);
 }
 
 ADD_TEST(capacity_grows)
@@ -44,6 +48,8 @@ ADD_TEST(capacity_grows)
     EXPECT(chunk.capacity > old_capacity);
     EXPECT(chunk.code[chunk.size - 1] == 7);
     EXPECT(chunk.code_line_numbers[chunk.size - 1] == 6);
+
+    xyz_chunk_free(&chunk);
 }
 
 ADD_TEST(free)
@@ -56,6 +62,8 @@ ADD_TEST(free)
     EXPECT(chunk.capacity == 0);
     EXPECT(chunk.size == 0);
     EXPECT(chunk.code == NULL);
+
+    xyz_chunk_free(&chunk);
 }
 
 ADD_TEST(write_constant)
@@ -66,6 +74,12 @@ ADD_TEST(write_constant)
     ASSERT(xyz_chunk_write_constant(&chunk, 5) == 0);
     EXPECT(chunk.constants.size == 1);
     EXPECT(chunk.constants.values[0] == 5);
+
+    ASSERT(xyz_chunk_write_constant(&chunk, 7) == 1);
+    EXPECT(chunk.constants.size == 2);
+    EXPECT(chunk.constants.values[1] == 7);
+
+    xyz_chunk_free(&chunk);
 }
 
 END_TEST_SUITE()

@@ -4,6 +4,7 @@ set(SOURCES
     src/test.h
     src/test_chunk.c
     src/test_value_array.c
+    src/test_vm.c
 
     src/main.c
 )
