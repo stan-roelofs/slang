@@ -1,4 +1,4 @@
-project(xyz_test)
+project(xyz-test)
         
 set(SOURCES
     src/test.h
@@ -9,6 +9,6 @@ set(SOURCES
     src/main.c
 )
 
-add_executable(xyz_test ${SOURCES})
-target_link_libraries(xyz_test xyz)
-target_include_directories(xyz_test PRIVATE ../src)
+add_executable(xyz-test ${SOURCES})
+target_link_libraries(xyz-test xyz)
+target_include_directories(xyz-test PRIVATE ../src)

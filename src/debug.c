@@ -11,7 +11,7 @@ void xyz_print_value(xyz_value value)
     xyz_printf("%g", value);
 }
 
-static size_t xyz_disassemble_instruction(struct xyz_chunk *chunk, size_t offset)
+static size_t xyz_disassemble_instruction(xyz_chunk *chunk, size_t offset)
 {
     uint8_t instruction = chunk->code[offset];
     if (offset > 0 && xyz_chunk_get_line_number(chunk, offset) == xyz_chunk_get_line_number(chunk, offset - 1))
@@ -33,13 +33,16 @@ static size_t xyz_disassemble_instruction(struct xyz_chunk *chunk, size_t offset
         xyz_printf("'\n");
         return offset + 2;
     }
+    case XYZ_OPCODE_NEGATE:
+        xyz_printf("OP_NEGATE\n");
+        return offset + 1;
     default:
         xyz_printf("Unknown opcode %d\n", instruction);
         return offset + 1;
     }
 }
 
-void xyz_disassemble_chunk(struct xyz_chunk *chunk, const char *name)
+void xyz_disassemble_chunk(xyz_chunk *chunk, const char *name)
 {
     xyz_printf("disassembling chunk: \"%s\"\n", name);
 
@@ -53,7 +56,7 @@ void xyz_disassemble_chunk(struct xyz_chunk *chunk, const char *name)
     }
 }
 
-void xyz_print_stack(struct xyz_vm *vm)
+void xyz_print_stack(xyz_vm *vm)
 {
     xyz_printf("          ");
     for (xyz_value *i = vm->stack; i < vm->stack_pointer; i++)

@@ -8,7 +8,7 @@ START_TEST_SUITE(value_array)
 
 ADD_TEST(init)
 {
-    struct xyz_value_array value_array;
+    xyz_value_array value_array;
     xyz_value_array_init(&value_array);
 
     EXPECT(value_array.capacity == 0);
@@ -20,7 +20,7 @@ ADD_TEST(init)
 
 ADD_TEST(write)
 {
-    struct xyz_value_array value_array;
+    xyz_value_array value_array;
     xyz_value_array_init(&value_array);
 
     xyz_value_array_write(&value_array, 5);
@@ -33,7 +33,7 @@ ADD_TEST(write)
 
 ADD_TEST(capacity_grows)
 {
-    struct xyz_value_array value_array;
+    xyz_value_array value_array;
     xyz_value_array_init(&value_array);
 
     size_t old_capacity = value_array.capacity;
@@ -53,7 +53,7 @@ ADD_TEST(capacity_grows)
 
 ADD_TEST(free)
 {
-    struct xyz_value_array value_array;
+    xyz_value_array value_array;
     xyz_value_array_init(&value_array);
     xyz_value_array_write(&value_array, 5);
     xyz_value_array_free(&value_array);

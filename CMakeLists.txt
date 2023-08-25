@@ -5,7 +5,7 @@ project(xyz
         DESCRIPTION "A simple but efficient scripting language"
         LANGUAGES C)
 
-option(XYZ_BUILD_TESTS "Build tests" OFF)
+option(XYZ_BUILD_TESTS "Build tests" ON)
 option(XYZ_BUILD_INTERPRETER "Build interpreter" ON)
 
 set(CMAKE_C_STANDARD 11)
@@ -13,13 +13,15 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS OFF)
         
 set (HEADERS
+    include/xyz/vm.h
+
     src/chunk.h
     src/common.h
     src/debug.h
     src/memory.h
     src/opcode.h
     src/value.h
-    src/vm.h
+    src/vm_internal.h
 )
 
 set(SOURCES
@@ -34,9 +36,7 @@ add_library(xyz ${SOURCES} ${HEADERS})
 target_include_directories(xyz PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 if (XYZ_BUILD_INTERPRETER)
-    add_executable(xyz-interpreter src/main.c)
-    target_link_libraries(xyz-interpreter xyz)
-    set_target_properties(xyz-interpreter PROPERTIES OUTPUT_NAME "xyz")
+    add_subdirectory(interpreter)
 endif()
 
 if (XYZ_BUILD_TESTS)

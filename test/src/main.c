@@ -1,10 +1,5 @@
 #include <stdio.h>
 
-#include "chunk.h"
-#include "debug.h"
-#include "opcode.h"
-#include "vm.h"
-
 #include "test.h"
 
 #define EXIT_SUCCESS 0

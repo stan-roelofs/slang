@@ -6,7 +6,7 @@ START_TEST_SUITE(chunk)
 
 ADD_TEST(init)
 {
-    struct xyz_chunk chunk;
+    xyz_chunk chunk;
     xyz_chunk_init(&chunk);
 
     EXPECT(chunk.capacity == 0);
@@ -18,7 +18,7 @@ ADD_TEST(init)
 
 ADD_TEST(write)
 {
-    struct xyz_chunk chunk;
+    xyz_chunk chunk;
     xyz_chunk_init(&chunk);
 
     xyz_chunk_write(&chunk, 5, 3);
@@ -32,7 +32,7 @@ ADD_TEST(write)
 
 ADD_TEST(capacity_grows)
 {
-    struct xyz_chunk chunk;
+    xyz_chunk chunk;
     xyz_chunk_init(&chunk);
 
     size_t old_capacity = chunk.capacity;
@@ -54,7 +54,7 @@ ADD_TEST(capacity_grows)
 
 ADD_TEST(free)
 {
-    struct xyz_chunk chunk;
+    xyz_chunk chunk;
     xyz_chunk_init(&chunk);
     xyz_chunk_write(&chunk, 5, 7);
     xyz_chunk_free(&chunk);
@@ -68,7 +68,7 @@ ADD_TEST(free)
 
 ADD_TEST(write_constant)
 {
-    struct xyz_chunk chunk;
+    xyz_chunk chunk;
     xyz_chunk_init(&chunk);
 
     ASSERT(xyz_chunk_write_constant(&chunk, 5) == 0);
