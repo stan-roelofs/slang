@@ -3,6 +3,7 @@
 #include "chunk.h"
 #include "debug.h"
 #include "opcode.h"
+#include "vm.h"
 
 #include "test.h"
 
@@ -16,6 +17,7 @@ int main(int argc, const char *argv[])
     bool result = true;
     RUN_TEST_SUITE(chunk);
     RUN_TEST_SUITE(value_array);
+    RUN_TEST_SUITE(vm);
 
     if (!result)
     {
@@ -24,14 +26,6 @@ int main(int argc, const char *argv[])
     }
 
     printf("\nAll tests passed!\n");
-
-    struct xyz_chunk chunk;
-    xyz_chunk_init(&chunk);
-    size_t constant = xyz_chunk_write_constant(&chunk, 1.2);
-    xyz_chunk_write(&chunk, OP_CONSTANT, 123);
-    xyz_chunk_write(&chunk, constant, 123);
-    xyz_chunk_write(&chunk, OP_RETURN, 123);
-    xyz_disassemble_chunk(&chunk, "test chunk");
 
     return EXIT_SUCCESS;
 }

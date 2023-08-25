@@ -6,6 +6,7 @@ project(xyz
         LANGUAGES C)
 
 option(XYZ_BUILD_TESTS "Build tests" OFF)
+option(XYZ_BUILD_INTERPRETER "Build interpreter" ON)
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
@@ -31,6 +32,12 @@ set(SOURCES
 
 add_library(xyz ${SOURCES} ${HEADERS})
 target_include_directories(xyz PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+if (XYZ_BUILD_INTERPRETER)
+    add_executable(xyz-interpreter src/main.c)
+    target_link_libraries(xyz-interpreter xyz)
+    set_target_properties(xyz-interpreter PROPERTIES OUTPUT_NAME "xyz")
+endif()
 
 if (XYZ_BUILD_TESTS)
     add_subdirectory(test)
