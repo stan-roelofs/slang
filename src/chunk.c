@@ -17,8 +17,10 @@ void xyz_chunk_init(xyz_chunk *chunk)
 
 void xyz_chunk_free(xyz_chunk *chunk)
 {
-    free(chunk->code);
-    free(chunk->code_line_numbers);
+    if (!chunk)
+        return;
+    xyz_free(chunk->code);
+    xyz_free(chunk->code_line_numbers);
     xyz_value_array_free(&chunk->constants);
     xyz_chunk_init(chunk);
 }

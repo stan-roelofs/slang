@@ -36,14 +36,19 @@ static void xyz_vm_init(xyz_vm *vm)
 
 xyz_vm *xyz_vm_new(void)
 {
-    xyz_vm *vm = malloc(sizeof(xyz_vm));
+    xyz_vm *vm = xyz_allocate(sizeof(xyz_vm));
     xyz_vm_init(vm);
     return vm;
 }
 
 void xyz_vm_free(xyz_vm *vm)
 {
-    xyz_vm_init(vm);
+    if (!vm)
+        return;
+
+    xyz_chunk_free(vm->chunk);
+    xyz_free(vm->error_message);
+    xyz_free(vm);
 }
 
 static enum xyz_run_result run(xyz_vm *vm)

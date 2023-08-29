@@ -58,10 +58,6 @@ ADD_TEST(free)
     xyz_vm *vm = xyz_vm_new();
     xyz_vm_push_stack(vm, 5);
     xyz_vm_free(vm);
-
-    EXPECT(vm->instruction_pointer == NULL);
-    EXPECT(vm->stack_pointer == vm->stack);
-    EXPECT(vm->chunk == NULL);
 }
 
 END_TEST_SUITE()

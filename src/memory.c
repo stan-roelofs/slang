@@ -13,3 +13,13 @@ void *xyz_reallocate(void *ptr, size_t new_size)
 
     return ptr;
 }
+
+void *xyz_allocate(size_t size)
+{
+    return xyz_reallocate(NULL, size);
+}
+
+void xyz_free(void *ptr)
+{
+    free(ptr);
+}

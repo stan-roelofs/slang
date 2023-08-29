@@ -15,7 +15,7 @@ void xyz_value_array_init(xyz_value_array *values)
 
 void xyz_value_array_free(xyz_value_array *values)
 {
-    free(values->values);
+    xyz_free(values->values);
     xyz_value_array_init(values);
 }
 
