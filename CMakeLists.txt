@@ -16,6 +16,7 @@ set (HEADERS
     include/xyz/vm.h
 
     src/chunk.h
+    src/compiler.h
     src/common.h
     src/debug.h
     src/memory.h
@@ -26,6 +27,7 @@ set (HEADERS
 
 set(SOURCES
     src/chunk.c
+    src/compiler.c
     src/debug.c
     src/memory.c
     src/value.c

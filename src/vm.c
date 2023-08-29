@@ -1,10 +1,12 @@
 #include "vm_internal.h"
 
 #include <stdio.h>
+#include <string.h>
 
+#include "compiler.h"
 #include "debug.h"
-
 #include "opcode.h"
+#include "memory.h"
 
 void xyz_vm_push_stack(xyz_vm *vm, xyz_value value)
 {
@@ -32,6 +34,7 @@ static void xyz_vm_init(xyz_vm *vm)
     vm->instruction_pointer = NULL;
     vm->stack_pointer = vm->stack;
     vm->fatal_handler = runtime_error;
+    vm->error_message = NULL;
 }
 
 xyz_vm *xyz_vm_new(void)
@@ -88,10 +91,79 @@ static enum xyz_run_result run(xyz_vm *vm)
 #undef READ_CONSTANT
 }
 
-enum xyz_interpret_result xyz_vm_run(xyz_vm *vm, xyz_chunk *chunk)
+static xyz_run_result vm_run_chunk(xyz_vm *vm, xyz_chunk *chunk)
 {
     vm->chunk = chunk;
     vm->instruction_pointer = vm->chunk->code;
 
     return run(vm);
+}
+
+//! \returns A pointer to a buffer containing the contents of the file, or NULL if an error occurred
+static char *read_file(const char *path, const char **error_message)
+{
+    FILE *file = fopen(path, "rb");
+    if (file == NULL)
+    {
+        xyz_set_error(error_message, "Could not open file");
+        return NULL;
+    }
+
+    fseek(file, 0L, SEEK_END);
+    size_t file_size = ftell(file);
+    rewind(file);
+
+    char *buffer = xyz_allocate(file_size + 1);
+    if (buffer == NULL)
+    {
+        xyz_set_error(error_message, "Could not allocate memory for file contents");
+        fclose(file);
+        return NULL;
+    }
+
+    size_t bytes_read = fread(buffer, sizeof(char), file_size, file);
+    if (bytes_read < file_size)
+    {
+        xyz_free(buffer);
+        fclose(file);
+        xyz_set_error(error_message, "Could not read file");
+        return NULL;
+    }
+
+    buffer[bytes_read] = '\0';
+    fclose(file);
+    return buffer;
+}
+
+xyz_run_result xyz_run_string(xyz_vm *vm, const char *source)
+{
+    xyz_chunk *chunk = xyz_compile(source, &vm->error_message);
+    if (chunk == NULL)
+        return XYZ_COMPILE_ERROR;
+
+    xyz_run_result result = vm_run_chunk(vm, chunk);
+    xyz_chunk_free(chunk);
+    return result;
+}
+
+xyz_run_result xyz_run_file(xyz_vm *vm, const char *path)
+{
+    char *source = read_file(path, &vm->error_message);
+    if (source == NULL)
+        return XYZ_FILE_ERROR;
+
+    xyz_run_result result = xyz_run_string(vm, source);
+    xyz_free(source);
+    return result;
+}
+
+const char *xyz_get_error(xyz_vm *vm)
+{
+    return vm->error_message != NULL ? vm->error_message : "";
+}
+
+void xyz_set_error(char **buffer, const char *message)
+{
+    *buffer = xyz_reallocate(*buffer, strlen(message) + 1);
+    strcpy((char *)(*buffer), message);
 }

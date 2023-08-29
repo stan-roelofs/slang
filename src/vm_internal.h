@@ -18,18 +18,12 @@ struct xyz_vm
     xyz_value stack[XYZ_STACK_SIZE];
     xyz_value *stack_pointer;
     xyz_fatal_handler fatal_handler;
+    char *error_message;
 };
 
 void xyz_vm_push_stack(xyz_vm *vm, xyz_value value);
 xyz_value xyz_vm_pop_stack(xyz_vm *vm);
 
-enum xyz_run_result
-{
-    XYZ_RUN_OK,
-    XYZ_RUN_COMPILE_ERROR,
-    XYZ_RUN_RUNTIME_ERROR
-};
-
-enum xyz_run_result xyz_vm_run(xyz_vm *vm, xyz_chunk *chunk);
+void xyz_set_error(char **buffer, const char *message);
 
 #endif
