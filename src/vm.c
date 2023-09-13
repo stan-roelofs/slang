@@ -12,13 +12,16 @@
 
 void slang_vm_push_stack(slang_vm *vm, slang_value value)
 {
-    assert((vm->stack_pointer - vm->stack) < SLANG_STACK_SIZE && "Stack overflow");
+    if (vm->stack_pointer - vm->stack == SLANG_STACK_SIZE)
+        vm->fatal_handler(vm, "Stack overflow");
     *vm->stack_pointer++ = value;
 }
 
 slang_value slang_vm_pop_stack(slang_vm *vm)
 {
-    assert(vm->stack_pointer - vm->stack > 0 && "Stack underflow");
+    if (vm->stack_pointer == vm->stack)
+        vm->fatal_handler(vm, "Stack underflow");
+
     return *--vm->stack_pointer;
 }
 
