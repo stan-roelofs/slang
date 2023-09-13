@@ -1,19 +1,19 @@
 cmake_minimum_required(VERSION 3.11)
  
-project(xyz 
+project(slang 
         VERSION 0.1.0 
         DESCRIPTION "A simple but efficient scripting language"
         LANGUAGES C)
 
-option(XYZ_BUILD_TESTS "Build tests" ON)
-option(XYZ_BUILD_INTERPRETER "Build interpreter" ON)
+option(SLANG_BUILD_TESTS "Build tests" ON)
+option(SLANG_BUILD_INTERPRETER "Build interpreter" ON)
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS OFF)
         
 set (HEADERS
-    include/xyz/vm.h
+    include/slang/vm.h
 
     src/chunk.h
     src/compiler.h
@@ -34,13 +34,13 @@ set(SOURCES
     src/vm.c
 )
 
-add_library(xyz ${SOURCES} ${HEADERS})
-target_include_directories(xyz PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+add_library(slang ${SOURCES} ${HEADERS})
+target_include_directories(slang PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-if (XYZ_BUILD_INTERPRETER)
+if (SLANG_BUILD_INTERPRETER)
     add_subdirectory(interpreter)
 endif()
 
-if (XYZ_BUILD_TESTS)
+if (SLANG_BUILD_TESTS)
     add_subdirectory(test)
 endif()

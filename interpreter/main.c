@@ -1,11 +1,11 @@
-#include <xyz/vm.h>
+#include <slang/vm.h>
 
 #include <stdio.h>
 
 #define EXIT_SUCCESS 0
 #define EXIT_FAILURE 1
 
-static void repl(xyz_vm *vm)
+static void repl(slang_vm *vm)
 {
     for (;;)
     {
@@ -18,10 +18,10 @@ static void repl(xyz_vm *vm)
             break;
         }
 
-        xyz_run_result result = xyz_run_string(vm, line);
-        if (result != XYZ_RUN_OK)
+        slang_run_result result = slang_run_string(vm, line);
+        if (result != SLANG_RUN_OK)
         {
-            printf("Error: %s\n", xyz_get_error(vm));
+            printf("Error: %s\n", slang_get_error(vm));
             break;
         }
     }
@@ -35,7 +35,7 @@ static void usage(const char *program_name)
 
 int main(int argc, const char *argv[])
 {
-    xyz_vm *vm = xyz_vm_new();
+    slang_vm *vm = slang_vm_new();
     int result = EXIT_SUCCESS;
 
     if (argc <= 1)
@@ -44,10 +44,10 @@ int main(int argc, const char *argv[])
     }
     else if (argc == 2)
     {
-        xyz_run_result result = xyz_run_file(vm, argv[1]);
-        if (result != XYZ_RUN_OK)
+        slang_run_result result = slang_run_file(vm, argv[1]);
+        if (result != SLANG_RUN_OK)
         {
-            printf("Error: %s\n", xyz_get_error(vm));
+            printf("Error: %s\n", slang_get_error(vm));
             result = EXIT_FAILURE;
         }
     }
@@ -57,6 +57,6 @@ int main(int argc, const char *argv[])
         result = EXIT_FAILURE;
     }
 
-    xyz_vm_free(vm);
+    slang_vm_free(vm);
     return result;
 }

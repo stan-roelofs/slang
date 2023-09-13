@@ -1,11 +1,11 @@
-#ifndef XYZ_OPCODE_H
-#define XYZ_OPCODE_H
+#ifndef SLANG_OPCODE_H
+#define SLANG_OPCODE_H
 
-enum xyz_opcode
+enum slang_opcode
 {
-    XYZ_OPCODE_RETURN,
-    XYZ_OPCODE_CONSTANT, // 1 operand TODO: what if we have more than 256 constants?
-    XYZ_OPCODE_NEGATE,
+    SLANG_OPCODE_RETURN,
+    SLANG_OPCODE_CONSTANT, // 1 operand TODO: what if we have more than 256 constants?
+    SLANG_OPCODE_NEGATE,
 };
 
 #endif

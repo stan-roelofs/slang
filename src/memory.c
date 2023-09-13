@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 
-void *xyz_reallocate(void *ptr, size_t new_size)
+void *slang_reallocate(void *ptr, size_t new_size)
 {
     ptr = realloc(ptr, new_size);
     if (!ptr)
@@ -14,12 +14,12 @@ void *xyz_reallocate(void *ptr, size_t new_size)
     return ptr;
 }
 
-void *xyz_allocate(size_t size)
+void *slang_allocate(size_t size)
 {
-    return xyz_reallocate(NULL, size);
+    return slang_reallocate(NULL, size);
 }
 
-void xyz_free(void *ptr)
+void slang_free(void *ptr)
 {
     free(ptr);
 }

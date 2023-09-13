@@ -1,4 +1,4 @@
-project(xyz-test)
+project(slang-test)
         
 set(SOURCES
     src/test.h
@@ -9,6 +9,6 @@ set(SOURCES
     src/main.c
 )
 
-add_executable(xyz-test ${SOURCES})
-target_link_libraries(xyz-test xyz)
-target_include_directories(xyz-test PRIVATE ../src)
+add_executable(slang-test ${SOURCES})
+target_link_libraries(slang-test slang)
+target_include_directories(slang-test PRIVATE ../src)

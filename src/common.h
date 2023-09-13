@@ -1,5 +1,5 @@
-#ifndef XYZ_COMMON_H
-#define XYZ_COMMON_H
+#ifndef SLANG_COMMON_H
+#define SLANG_COMMON_H
 
 #include <assert.h>
 #include <stdbool.h>

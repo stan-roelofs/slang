@@ -1,20 +1,20 @@
-#ifndef XYZ_VALUE_H
-#define XYZ_VALUE_H
+#ifndef SLANG_VALUE_H
+#define SLANG_VALUE_H
 
 #include "common.h"
 
-typedef double xyz_value;
+typedef double slang_value;
 
 /// \brief A dynamic array of values
 typedef struct
 {
-    xyz_value *values;
+    slang_value *values;
     size_t capacity; // total capacity
     size_t size;     // actual size of code, should always be <= capacity
-} xyz_value_array;
+} slang_value_array;
 
-void xyz_value_array_init(xyz_value_array *chunk);
-void xyz_value_array_free(xyz_value_array *chunk);
-void xyz_value_array_write(xyz_value_array *chunk, xyz_value value);
+void slang_value_array_init(slang_value_array *chunk);
+void slang_value_array_free(slang_value_array *chunk);
+void slang_value_array_write(slang_value_array *chunk, slang_value value);
 
 #endif

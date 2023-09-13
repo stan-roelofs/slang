@@ -1,5 +1,5 @@
-#ifndef XYZ_TEST_H
-#define XYZ_TEST_H
+#ifndef SLANG_TEST_H
+#define SLANG_TEST_H
 
 #include <stdbool.h>
 #include <stdio.h>
