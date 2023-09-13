@@ -13,7 +13,7 @@ typedef void (*slang_fatal_handler)(struct slang_vm *vm, const char *message);
 /// \brief The virtual machine, it runs a chunk of bytecode
 struct slang_vm
 {
-    slang_chunk *chunk;
+    slang_chunk *chunk; // Note: not owned by the VM
     uint8_t *instruction_pointer;
     slang_value stack[SLANG_STACK_SIZE];
     slang_value *stack_pointer;
@@ -23,5 +23,9 @@ struct slang_vm
 
 void slang_vm_push_stack(slang_vm *vm, slang_value value);
 slang_value slang_vm_pop_stack(slang_vm *vm);
+slang_run_result slang_vm_run_chunk(slang_vm *vm, slang_chunk *chunk);
+
+/// \brief Sets the error message of the virtual machine
+void slang_vm_set_error(slang_vm *vm, const char *message, ...);
 
 #endif

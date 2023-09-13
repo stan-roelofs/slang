@@ -21,10 +21,10 @@ static size_t slang_disassemble_instruction(slang_chunk *chunk, size_t offset)
 
     switch (instruction)
     {
-    case SLANG_OPCODE_RETURN:
+    case OP_RETURN:
         slang_printf("OP_RETURN\n");
         return offset + 1;
-    case SLANG_OPCODE_CONSTANT:
+    case OP_CONSTANT:
     {
         size_t constant_index = chunk->code[offset + 1];
         slang_value constant = chunk->constants.values[constant_index];
@@ -33,13 +33,25 @@ static size_t slang_disassemble_instruction(slang_chunk *chunk, size_t offset)
         slang_printf("'\n");
         return offset + 2;
     }
-    case SLANG_OPCODE_NEGATE:
+    case OP_NEGATE:
         slang_printf("OP_NEGATE\n");
         return offset + 1;
-    default:
-        slang_printf("Unknown opcode %d\n", instruction);
+    case OP_ADD:
+        slang_printf("OP_ADD\n");
+        return offset + 1;
+    case OP_SUBTRACT:
+        slang_printf("OP_SUBTRACT\n");
+        return offset + 1;
+    case OP_MULTIPLY:
+        slang_printf("OP_MULTIPLY\n");
+        return offset + 1;
+    case OP_DIVIDE:
+        slang_printf("OP_DIVIDE\n");
         return offset + 1;
     }
+
+    slang_printf("Unknown opcode %d\n", instruction);
+    return offset + 1;
 }
 
 void slang_disassemble_chunk(slang_chunk *chunk, const char *name)

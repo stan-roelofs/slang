@@ -12,6 +12,7 @@ int main(int argc, const char *argv[])
     bool result = true;
     RUN_TEST_SUITE(chunk);
     RUN_TEST_SUITE(value_array);
+    RUN_TEST_SUITE(util);
     RUN_TEST_SUITE(vm);
 
     if (!result)

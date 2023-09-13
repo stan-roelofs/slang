@@ -3,6 +3,7 @@
 
 #include <stdbool.h>
 #include <stdio.h>
+#include <string.h>
 
 #define ASSERT(condition)                                                       \
     if (!(condition))                                                           \
@@ -20,6 +21,7 @@
     }
 
 #define FLOAT_EQUAL(a, b) (fabs((a) - (b)) < 0.00001)
+#define STRING_EQUAL(a, b) (strcmp((a), (b)) == 0)
 
 #define TEST_PASS() return true;
 

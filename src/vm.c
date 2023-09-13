@@ -1,5 +1,6 @@
 #include "vm_internal.h"
 
+#include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -7,6 +8,7 @@
 #include "debug.h"
 #include "opcode.h"
 #include "memory.h"
+#include "util.h"
 
 void slang_vm_push_stack(slang_vm *vm, slang_value value)
 {
@@ -49,15 +51,21 @@ void slang_vm_free(slang_vm *vm)
     if (!vm)
         return;
 
-    slang_chunk_free(vm->chunk);
     slang_free(vm->error_message);
     slang_free(vm);
 }
 
-static enum slang_run_result run(slang_vm *vm)
+static slang_run_result run(slang_vm *vm)
 {
 #define READ() (*vm->instruction_pointer++)
 #define READ_CONSTANT() (vm->chunk->constants.values[READ()])
+#define BINARY_ARITHMETIC_OP(op)                \
+    do                                          \
+    {                                           \
+        slang_value b = slang_vm_pop_stack(vm); \
+        slang_value a = slang_vm_pop_stack(vm); \
+        slang_vm_push_stack(vm, a op b);        \
+    } while (0)
 
     for (;;)
     {
@@ -66,32 +74,46 @@ static enum slang_run_result run(slang_vm *vm)
         slang_print_stack(vm);
 #endif
         uint8_t instruction;
-        switch (instruction = *vm->instruction_pointer++)
+        switch (instruction = READ())
         {
-        case SLANG_OPCODE_RETURN:
+        case OP_RETURN:
             // TODO
-            slang_print_value(slang_vm_pop_stack(vm));
-            printf("\n");
             return SLANG_RUN_OK;
-        case SLANG_OPCODE_CONSTANT:
+        case OP_CONSTANT:
         {
             slang_value constant = READ_CONSTANT();
             slang_vm_push_stack(vm, constant);
             break;
         }
-        case SLANG_OPCODE_NEGATE:
+        case OP_NEGATE:
         {
             slang_vm_push_stack(vm, -slang_vm_pop_stack(vm));
             break;
         }
+        case OP_ADD:
+            BINARY_ARITHMETIC_OP(+);
+            break;
+        case OP_SUBTRACT:
+            BINARY_ARITHMETIC_OP(-);
+            break;
+        case OP_MULTIPLY:
+            BINARY_ARITHMETIC_OP(*);
+            break;
+        case OP_DIVIDE:
+            BINARY_ARITHMETIC_OP(/);
+            break;
+        default:
+            slang_vm_set_error(vm, "Unknown opcode: %d", instruction);
+            return SLANG_RUNTIME_ERROR;
         }
-    }
 
 #undef READ
 #undef READ_CONSTANT
+#undef BINARY_ARITHMETIC_OP
+    }
 }
 
-static slang_run_result vm_run_chunk(slang_vm *vm, slang_chunk *chunk)
+slang_run_result slang_vm_run_chunk(slang_vm *vm, slang_chunk *chunk)
 {
     vm->chunk = chunk;
     vm->instruction_pointer = vm->chunk->code;
@@ -100,12 +122,12 @@ static slang_run_result vm_run_chunk(slang_vm *vm, slang_chunk *chunk)
 }
 
 //! \returns A pointer to a buffer containing the contents of the file, or NULL if an error occurred
-static char *read_file(const char *path, const char **error_message)
+static char *read_file(const char *path, char **error_message)
 {
     FILE *file = fopen(path, "rb");
     if (file == NULL)
     {
-        slang_set_error(error_message, "Could not open file");
+        slang_set_error(error_message, "Could not open file: %s", path);
         return NULL;
     }
 
@@ -141,7 +163,7 @@ slang_run_result slang_run_string(slang_vm *vm, const char *source)
     if (chunk == NULL)
         return SLANG_COMPILE_ERROR;
 
-    slang_run_result result = vm_run_chunk(vm, chunk);
+    slang_run_result result = slang_vm_run_chunk(vm, chunk);
     slang_chunk_free(chunk);
     return result;
 }
@@ -162,8 +184,10 @@ const char *slang_get_error(slang_vm *vm)
     return vm->error_message != NULL ? vm->error_message : "";
 }
 
-void slang_set_error(char **buffer, const char *message)
+void slang_vm_set_error(slang_vm *vm, const char *message, ...)
 {
-    *buffer = slang_reallocate(*buffer, strlen(message) + 1);
-    strcpy((char *)(*buffer), message);
+    va_list valist;
+    va_start(valist, message);
+    slang_set_errorv(&vm->error_message, message, valist);
+    va_end(valist);
 }

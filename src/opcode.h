@@ -3,9 +3,15 @@
 
 enum slang_opcode
 {
-    SLANG_OPCODE_RETURN,
-    SLANG_OPCODE_CONSTANT, // 1 operand TODO: what if we have more than 256 constants?
-    SLANG_OPCODE_NEGATE,
+    OP_RETURN,
+    OP_CONSTANT, // 1 operand TODO: what if we have more than 256 constants?
+
+    // Arithmetic
+    OP_NEGATE,
+    OP_ADD,
+    OP_SUBTRACT,
+    OP_MULTIPLY,
+    OP_DIVIDE
 };
 
 #endif
