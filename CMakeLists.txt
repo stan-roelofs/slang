@@ -21,6 +21,7 @@ set (HEADERS
     src/debug.h
     src/memory.h
     src/opcode.h
+    src/util.h
     src/value.h
     src/vm_internal.h
 )
@@ -30,12 +31,20 @@ set(SOURCES
     src/compiler.c
     src/debug.c
     src/memory.c
+    src/util.c
     src/value.c
     src/vm.c
 )
 
 add_library(slang ${SOURCES} ${HEADERS})
 target_include_directories(slang PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+if(MSVC)
+  target_compile_options(slang PRIVATE /W4 /WX)
+  target_compile_definitions(slang PRIVATE -D_CRT_SECURE_NO_WARNINGS)
+else()
+  target_compile_options(slang PRIVATE -Wall -Wextra -Wpedantic -Werror)
+endif()
 
 if (SLANG_BUILD_INTERPRETER)
     add_subdirectory(interpreter)

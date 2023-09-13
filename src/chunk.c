@@ -3,7 +3,6 @@
 #include "memory.h"
 
 #define MINIMUM_CAPACITY 32
-static_assert(((size_t)(MINIMUM_CAPACITY * 1.5)) != MINIMUM_CAPACITY, "Minimum capacity is too small");
 #define GROW_CHUNK(current_capacity) (((size_t)((current_capacity) < MINIMUM_CAPACITY ? MINIMUM_CAPACITY : (current_capacity)*1.5)))
 
 void slang_chunk_init(slang_chunk *chunk)

@@ -3,6 +3,6 @@
 
 #include "chunk.h"
 
-slang_chunk *slang_compile(const char *source, const char **error_message);
+slang_chunk *slang_compile(const char *source, char **error_message);
 
 #endif

@@ -24,6 +24,4 @@ struct slang_vm
 void slang_vm_push_stack(slang_vm *vm, slang_value value);
 slang_value slang_vm_pop_stack(slang_vm *vm);
 
-void slang_set_error(char **buffer, const char *message);
-
 #endif
