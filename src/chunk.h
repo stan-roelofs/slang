@@ -3,6 +3,9 @@
 
 #include "value.h"
 
+#include <stddef.h>
+#include <stdint.h>
+
 /// \brief A chunk of bytecode
 typedef struct
 {

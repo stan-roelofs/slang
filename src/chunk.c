@@ -1,6 +1,7 @@
 #include "chunk.h"
 
 #include <assert.h>
+#include <stddef.h>
 
 #include "memory.h"
 

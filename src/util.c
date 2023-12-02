@@ -16,7 +16,10 @@ void slang_set_error(char **buffer, const char *message, ...)
 
 void slang_set_errorv(char **buffer, const char *message, va_list valist)
 {
-    int size = vsnprintf((char *)NULL, 0, message, valist);
+    // Need to copy the va_list because vsnprintf will modify it
+    va_list valist_copy;
+    va_copy(valist_copy, valist);
+    const int size = vsnprintf((char *)NULL, 0, message, valist_copy);
     *buffer = slang_reallocate(*buffer, size + 1);
     vsprintf(*buffer, message, valist);
 }

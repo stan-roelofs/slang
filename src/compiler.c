@@ -24,17 +24,18 @@ slang_chunk *slang_compile(const char *source, char **error_message)
         switch (token.type)
         {
         case TOKEN_ERROR:
-        {
             slang_set_error(error_message, "Compiling failed: %.*s\n", token.length, token.start); // TODO: use a proper error message
             slang_chunk_free(chunk);
             return NULL;
-        }
-        break;
+            break;
 
         case TOKEN_EOF:
-        {
             return chunk;
-        }
+
+        default:
+            slang_set_error(error_message, "Unexpected token type: %d\n", token.type);
+            slang_chunk_free(chunk);
+            return NULL;
         }
     }
 
