@@ -1,7 +1,7 @@
 #ifndef SLANG_VALUE_H
 #define SLANG_VALUE_H
 
-#include "common.h"
+#include <stdint.h>
 
 typedef double slang_value;
 

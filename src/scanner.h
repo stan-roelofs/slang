@@ -59,7 +59,19 @@ typedef struct
     unsigned line;
 } slang_token;
 
+/**
+ * Initializes a scanner with the given source code.
+ * \param scanner The scanner to initialize
+ * \param source The source code to scan, this must be a null-terminated string.
+ *               The scanner does not make a copy of the source code, so the source code must outlive the scanner.
+ */
 void slang_scanner_init(slang_scanner *scanner, const char *source);
+
+/**
+ * Scans the next token from the source code.
+ * \param scanner The scanner to scan the next token from *
+ * \return The next token from the source code. On error the token type will be TOKEN_ERROR an error message is written to the token's start.
+ */
 slang_token slang_scanner_scan_token(slang_scanner *scanner);
 
 #endif

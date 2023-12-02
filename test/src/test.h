@@ -22,6 +22,7 @@
 
 #define FLOAT_EQUAL(a, b) (fabs((a) - (b)) < 0.00001)
 #define STRING_EQUAL(a, b) (strcmp((a), (b)) == 0)
+#define STRING_EQUAL_N(a, b, n) (strncmp((a), (b), (n)) == 0)
 
 #define TEST_PASS() return true;
 
@@ -37,7 +38,6 @@
 
 #define ADD_TEST(test_name)                   \
     printf("Running test: %s\n", #test_name); \
-    bool result_##test_name = true;           \
     for (int i = 0; i < 1; ++i)
 
 #define END_TEST_SUITE() \

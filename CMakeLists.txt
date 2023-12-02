@@ -18,7 +18,6 @@ set (HEADERS
 
     src/chunk.h
     src/compiler.h
-    src/common.h
     src/debug.h
     src/memory.h
     src/opcode.h

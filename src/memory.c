@@ -1,6 +1,7 @@
 #include "memory.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 
 void *slang_reallocate(void *ptr, size_t new_size)
 {

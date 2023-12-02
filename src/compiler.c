@@ -1,5 +1,7 @@
 #include "compiler.h"
 
+#include <stdbool.h>
+
 #include "memory.h"
 #include "scanner.h"
 #include "util.h"

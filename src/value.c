@@ -1,9 +1,11 @@
 #include "value.h"
 
+#include <assert.h>
+
 #include "memory.h"
 
 #define MINIMUM_CAPACITY 32
-#define GROW_VALUE_ARRAY(current_capacity) (((size_t)((current_capacity) < MINIMUM_CAPACITY ? MINIMUM_CAPACITY : (current_capacity)*1.5)))
+#define GROW_VALUE_ARRAY(current_capacity) (((size_t)((current_capacity) < MINIMUM_CAPACITY ? MINIMUM_CAPACITY : (current_capacity) * 1.5)))
 
 void slang_value_array_init(slang_value_array *values)
 {
