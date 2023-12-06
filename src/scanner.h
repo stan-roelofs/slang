@@ -21,7 +21,10 @@ typedef enum
     TOKEN_SEMICOLON,
     TOKEN_SLASH,
     TOKEN_STAR,
-
+    TOKEN_OR,
+    TOKEN_OR_OR,
+    TOKEN_AND,
+    TOKEN_AND_AND,
     TOKEN_NEGATE,
     TOKEN_EQUAL,
     TOKEN_GREATER,
@@ -44,7 +47,6 @@ typedef enum
     TOKEN_VARIABLE,
     TOKEN_FUNCTION,
     TOKEN_RETURN,
-    TOKEN_SWITCH,
 
     // Other
     TOKEN_ERROR,

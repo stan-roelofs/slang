@@ -95,9 +95,22 @@ static bool match(slang_scanner *scanner, char expected)
     return true;
 }
 
+static bool is_letter(char c)
+{
+    return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
+}
+
 static bool is_digit(char c)
 {
     return c >= '0' && c <= '9';
+}
+
+static bool is_keyword_or_identifier(char c, bool start_of_token)
+{
+    if (start_of_token)
+        return is_letter(c) || c == '_';
+
+    return is_letter(c) || is_digit(c) || c == '_';
 }
 
 static slang_token make_string(slang_scanner *scanner)
@@ -138,6 +151,59 @@ static slang_token make_number(slang_scanner *scanner)
     return make_token(scanner, TOKEN_NUMBER);
 }
 
+static slang_token finish_keyword_else_identifier(slang_scanner *scanner, unsigned start, unsigned length, const char *rest, slang_token_type type)
+{
+    if (scanner->token_current - scanner->token_start == start + length &&
+        memcmp(scanner->token_start + start, rest, length) == 0)
+    {
+        return make_token(scanner, type);
+    }
+
+    return make_token(scanner, TOKEN_IDENTIFIER);
+}
+
+static slang_token make_keyword_or_identifier(slang_scanner *scanner)
+{
+    char next_char = peek_token(scanner);
+    while (is_keyword_or_identifier(next_char, scanner->token_current == scanner->token_start))
+    {
+        next_token(scanner);
+        next_char = peek_token(scanner);
+    }
+
+    // We could properly implement a trie for this, but since our keywords are always the same
+    // we can just build it by hand using a switch statement.
+    switch (scanner->token_start[0])
+    {
+    case 'e':
+        return finish_keyword_else_identifier(scanner, 1, 3, "lse", TOKEN_ELSE);
+    case 'f':
+        if (scanner->token_current - scanner->token_start > 1)
+        {
+            switch (scanner->token_start[1])
+            {
+            case 'o':
+                return finish_keyword_else_identifier(scanner, 2, 1, "r", TOKEN_FOR);
+            case 'u':
+                return finish_keyword_else_identifier(scanner, 2, 6, "nction", TOKEN_FUNCTION);
+            }
+        }
+        return finish_keyword_else_identifier(scanner, 1, 1, "n", TOKEN_FUNCTION);
+    case 'i':
+        return finish_keyword_else_identifier(scanner, 1, 1, "f", TOKEN_IF);
+    case 'r':
+        return finish_keyword_else_identifier(scanner, 1, 5, "eturn", TOKEN_RETURN);
+    case 'v':
+        return finish_keyword_else_identifier(scanner, 1, 2, "ar", TOKEN_VARIABLE);
+    case 'w':
+        return finish_keyword_else_identifier(scanner, 1, 4, "hile", TOKEN_WHILE);
+    default:
+        break;
+    }
+
+    return make_token(scanner, TOKEN_IDENTIFIER);
+}
+
 slang_token slang_scanner_scan_token(slang_scanner *scanner)
 {
     scanner->token_start = scanner->token_current;
@@ -147,10 +213,15 @@ slang_token slang_scanner_scan_token(slang_scanner *scanner)
     if (is_at_end(scanner))
         return make_token(scanner, TOKEN_EOF);
 
+    if (is_keyword_or_identifier(peek_token(scanner), true))
+        return make_keyword_or_identifier(scanner);
+
+    if (is_digit(peek_token(scanner)))
+        return make_number(scanner);
+
     char c = next_token(scanner);
     switch (c)
     {
-    // One character tokens
     case '(':
         return make_token(scanner, TOKEN_LEFT_PARENTHESIS);
     case ')':
@@ -173,7 +244,6 @@ slang_token slang_scanner_scan_token(slang_scanner *scanner)
         return make_token(scanner, TOKEN_SLASH);
     case '*':
         return make_token(scanner, TOKEN_STAR);
-    // One or two character tokens
     case '!':
         return make_token(scanner, match(scanner, '=') ? TOKEN_NEGATE_EQUAL : TOKEN_NEGATE);
     case '=':
@@ -182,20 +252,15 @@ slang_token slang_scanner_scan_token(slang_scanner *scanner)
         return make_token(scanner, match(scanner, '=') ? TOKEN_GREATER_EQUAL : TOKEN_GREATER);
     case '<':
         return make_token(scanner, match(scanner, '=') ? TOKEN_LESS_EQUAL : TOKEN_LESS);
+    case '|':
+        return make_token(scanner, match(scanner, '|') ? TOKEN_OR_OR : TOKEN_OR);
+    case '&':
+        return make_token(scanner, match(scanner, '&') ? TOKEN_AND_AND : TOKEN_AND);
     // Literals
     case '"':
         return make_string(scanner);
-    case '0':
-    case '1':
-    case '2':
-    case '3':
-    case '4':
-    case '5':
-    case '6':
-    case '7':
-    case '8':
-    case '9':
-        return make_number(scanner);
+    default:
+        break;
     }
 
     return make_error_token(scanner, "Unexpected character");

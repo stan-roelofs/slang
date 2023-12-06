@@ -157,6 +157,61 @@ ADD_TEST(less_equal)
     TEST_TOKEN(TOKEN_LESS_EQUAL, "<=");
 }
 
+ADD_TEST(or)
+{
+    TEST_TOKEN(TOKEN_OR, "|");
+}
+
+ADD_TEST(or_or)
+{
+    TEST_TOKEN(TOKEN_OR_OR, "||");
+}
+
+ADD_TEST(and)
+{
+    TEST_TOKEN(TOKEN_AND, "&");
+}
+
+ADD_TEST(and_and)
+{
+    TEST_TOKEN(TOKEN_AND_AND, "&&");
+}
+
+ADD_TEST(keyword_if)
+{
+    TEST_TOKEN(TOKEN_IF, "if");
+}
+
+ADD_TEST(keyword_else)
+{
+    TEST_TOKEN(TOKEN_ELSE, "else");
+}
+
+ADD_TEST(keyword_for)
+{
+    TEST_TOKEN(TOKEN_FOR, "for");
+}
+
+ADD_TEST(keyword_while)
+{
+    TEST_TOKEN(TOKEN_WHILE, "while");
+}
+
+ADD_TEST(keyword_variable)
+{
+    TEST_TOKEN(TOKEN_VARIABLE, "var");
+}
+
+ADD_TEST(keyword_function)
+{
+    TEST_TOKEN(TOKEN_FUNCTION, "function");
+}
+
+ADD_TEST(keyword_return)
+{
+    TEST_TOKEN(TOKEN_RETURN, "return");
+}
+
 ADD_TEST(string_literal)
 {
     const char *string_literal = "\"This is a string literal\"";
@@ -208,6 +263,17 @@ ADD_TEST(number_with_decimal)
     EXPECT(token.length == strlen(number_literal));
     EXPECT(token.line == 1);
     EXPECT(STRING_EQUAL_N(token.start, number_literal, token.length));
+}
+
+ADD_TEST(identifier)
+{
+    const char *identifier = "identifier";
+    slang_scanner_init(&scanner, identifier);
+    slang_token token = slang_scanner_scan_token(&scanner);
+    EXPECT(token.type == TOKEN_IDENTIFIER);
+    EXPECT(token.length == strlen(identifier));
+    EXPECT(token.line == 1);
+    EXPECT(STRING_EQUAL_N(token.start, identifier, token.length));
 }
 
 END_TEST_SUITE()
