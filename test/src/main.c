@@ -15,6 +15,7 @@ int main(int argc, const char *argv[])
     RUN_TEST_SUITE(value_array);
     RUN_TEST_SUITE(util);
     RUN_TEST_SUITE(vm);
+    RUN_TEST_SUITE(compiler);
 
     if (!result)
     {
