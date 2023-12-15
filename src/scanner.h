@@ -56,7 +56,7 @@ typedef enum
 typedef struct
 {
     slang_token_type type;
-    const char *start;
+    const char *start; // Note: not null-terminated!
     unsigned length;
     unsigned line;
 } slang_token;

@@ -1,8 +1,10 @@
 #ifndef SLANG_COMPILER_H
 #define SLANG_COMPILER_H
 
+#include <stdbool.h>
+
 #include "chunk.h"
 
-slang_chunk *slang_compile(const char *source, char **error_message);
+bool slang_compile(slang_chunk *chunk, const char *source, char **error_message);
 
 #endif

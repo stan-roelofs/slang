@@ -3,6 +3,8 @@
 
 #include <stdarg.h>
 
+void slang_append_error(char **buffer, const char *message, ...);
+void slang_append_errorv(char **buffer, const char *message, va_list valist);
 void slang_set_error(char **buffer, const char *message, ...);
 void slang_set_errorv(char **buffer, const char *message, va_list valist);
 

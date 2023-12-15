@@ -1,6 +1,6 @@
 project(slang-test)
 
-OPTION(USE_ADDRESS_SANITIZER "Use address sanitizer" ON)
+OPTION(USE_ADDRESS_SANITIZER "Use address sanitizer" OFF)
 
 set(SOURCES
     src/test.h

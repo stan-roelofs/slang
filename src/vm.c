@@ -163,12 +163,12 @@ static char *read_file(const char *path, char **error_message)
 
 slang_run_result slang_run_string(slang_vm *vm, const char *source)
 {
-    slang_chunk *chunk = slang_compile(source, &vm->error_message);
-    if (chunk == NULL)
-        return SLANG_COMPILE_ERROR;
-
-    slang_run_result result = slang_vm_run_chunk(vm, chunk);
-    slang_chunk_free(chunk);
+    slang_chunk chunk;
+    slang_chunk_init(&chunk);
+    slang_run_result result = slang_compile(&chunk, source, &vm->error_message);
+    if (result == SLANG_RUN_OK)
+        result = slang_vm_run_chunk(vm, &chunk);
+    slang_chunk_free(&chunk);
     return result;
 }
 

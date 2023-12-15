@@ -7,7 +7,7 @@ enum slang_opcode
     OP_CONSTANT, // 1 operand TODO: what if we have more than 256 constants?
 
     // Arithmetic
-    OP_NEGATE,
+    OP_NEGATE, // Negates the value at the top of the stack
     OP_ADD,
     OP_SUBTRACT,
     OP_MULTIPLY,

@@ -5,6 +5,31 @@
 
 #include "memory.h"
 
+void slang_append_error(char **buffer, const char *message, ...)
+{
+    va_list valist;
+    va_start(valist, message);
+
+    slang_append_errorv(buffer, message, valist);
+    va_end(valist);
+}
+
+void slang_append_errorv(char **buffer, const char *message, va_list valist)
+{
+    if (*buffer == NULL)
+    {
+        slang_set_errorv(buffer, message, valist);
+        return;
+    }
+
+    // Need to copy the va_list because vsnprintf will modify it
+    va_list valist_copy;
+    va_copy(valist_copy, valist);
+    const int size = vsnprintf((char *)NULL, 0, message, valist_copy);
+    *buffer = slang_reallocate(*buffer, strlen(*buffer) + size + 1);
+    vsprintf(*buffer + strlen(*buffer), message, valist);
+}
+
 void slang_set_error(char **buffer, const char *message, ...)
 {
     va_list valist;

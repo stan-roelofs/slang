@@ -6,12 +6,13 @@ typedef struct slang_vm slang_vm;
 slang_vm *slang_vm_new();
 void slang_vm_free(slang_vm *vm);
 
-typedef int slang_run_result;
-
-#define SLANG_RUN_OK 0
-#define SLANG_COMPILE_ERROR 1
-#define SLANG_RUNTIME_ERROR 2
-#define SLANG_FILE_ERROR 3
+typedef enum
+{
+    SLANG_RUN_OK,
+    SLANG_COMPILE_ERROR,
+    SLANG_RUNTIME_ERROR,
+    SLANG_FILE_ERROR
+} slang_run_result;
 
 /**
  * Compiles a string into bytecode and runs it.
